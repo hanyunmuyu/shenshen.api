@@ -29,7 +29,7 @@ class ClubController extends Controller
         $clubList = $this->clubRepository->getClubList()->toArray();
         if ($clubList) {
             foreach ($clubList['data'] as $k => $list) {
-                $clubList['data'][$k]['logo'] = env('APP_DOMAIN') . $list['logo'];
+                $clubList['data'][$k]['logo'] = config('api.api_domain'). $list['logo'];
             }
         }
         return $this->success($clubList);

@@ -19,7 +19,7 @@ class SchoolDepartmentTableSeeder extends Seeder
                 'logo'=>'',
                 'description'=>'经济贸易学院',
                 'add_time'=>time(),
-                'status'=>3
+                'status'=>$i%3
             ]);
         }
     }

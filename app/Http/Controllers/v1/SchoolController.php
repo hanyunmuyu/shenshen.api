@@ -29,7 +29,7 @@ class SchoolController extends Controller
         $schoolList = $this->schoolRepository->getSchoolList()->toArray();
         if ($schoolList) {
             foreach ($schoolList['data'] as $k=>$list) {
-                $schoolList['data'][$k]['logo'] = env('APP_DOMAIN') . $list['logo'];
+                $schoolList['data'][$k]['logo'] = config('api.api_domain') . $list['logo'];
             }
         }
         return $this->success($schoolList);
