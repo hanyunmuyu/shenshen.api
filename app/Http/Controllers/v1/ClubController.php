@@ -16,9 +16,6 @@ class ClubController extends Controller
 {
 
     private $clubRepository;
-    /**
-     * ClubController constructor.
-     */
     public function __construct(ClubRepository $clubRepository)
     {
         $this->clubRepository = $clubRepository;

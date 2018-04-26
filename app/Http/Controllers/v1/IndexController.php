@@ -22,9 +22,7 @@ class IndexController extends Controller
     private $clubRepository;
     private $userRepository;
     private $schoolRepository;
-    /**
-     * IndexController constructor.
-     */
+
     public function __construct(
         HomeRecommendRepository $homeRecommendRepository,
         ClubRepository $clubRepository,
