@@ -10,42 +10,61 @@ namespace App\Http\Controllers\v1;
 
 
 use App\Http\Controllers\Controller;
+use App\Repositories\v1\ClubRepository;
 use App\Repositories\v1\HomeRecommendRepository;
+use App\Repositories\v1\SchoolRepository;
+use App\Repositories\v1\UserPostRepository;
+use App\Repositories\v1\UserRepository;
 
 class IndexController extends Controller
 {
     private $homeRecommendRepository;
+    private $clubRepository;
+    private $userRepository;
+    private $schoolRepository;
     /**
      * IndexController constructor.
      */
-    public function __construct(HomeRecommendRepository $homeRecommendRepository)
+    public function __construct(
+        HomeRecommendRepository $homeRecommendRepository,
+        ClubRepository $clubRepository,
+        UserRepository $userRepository,
+        SchoolRepository $schoolRepository
+    )
     {
         $this->homeRecommendRepository = $homeRecommendRepository;
+        $this->clubRepository = $clubRepository;
+        $this->userRepository = $userRepository;
+        $this->schoolRepository = $schoolRepository;
     }
 
     public function index()
     {
-        $data = [];
-        for ($i = 0; $i < 16; $i++) {
-            $tmp=[];
-            $imgList = [
-                '/static/images/hats.jpg',
-                '/static/images/breakfast.jpg',
-                '/static/images/camera.jpg'
-            ];
-            $tmp['avatar'] = '/static/hats.jpg';
-            $tmp['title'] = '河南工业大学';
-            $tmp['username'] = '寒云';
-            $tmp['description'] = '河南工业大学简介河南工业大学简介河南工业大学简介河南工业大学简介河南工业大学简介河南工业大学简介河南工业大学简介河南工业大学简介';
-            $tmp['imgList'] = $imgList;
-            $tmp['clickNum'] = 10000;
-            $tmp['favoriteNum'] = 100;
-            $tmp['userId'] = $i + 1;
-            $data[] = $tmp;
-        }
         $dataList = $this->homeRecommendRepository->getHomeRecommendList()->toArray();
         foreach ($dataList['data'] as $k => $val) {
-            $dataList['data'][$k]['img_a'] = config('api.api_domain').$val['img_a'];
+            $dataList['data'][$k]['name'] = '';
+            $dataList['data'][$k]['avatar'] = '';
+            if ($val['tag'] == 'club') {
+                $club = $this->clubRepository->getClubById($val['source_id']);
+                if ($club) {
+                    $dataList['data'][$k]['name'] = $club->name;
+                    $dataList['data'][$k]['avatar'] = config('api.api_domain') . $club->logo;
+                }
+            } elseif ($val['tag'] == 'user_post') {
+                $user = $this->userRepository->getUserByUserId($val['source_id']);
+                if ($user) {
+                    $dataList['data'][$k]['name'] = $user->user_name;
+                    $dataList['data'][$k]['avatar']=config('api.api_domain') .$user->avatar;
+                }
+            } elseif ($val['tag'] == 'school') {
+                $school = $this->schoolRepository->getSchoolBySchoolId($val['source_id']);
+                if ($school) {
+                    $dataList['data'][$k]['name'] = $school->name;
+                    $dataList['data'][$k]['avatar']=config('api.api_domain') .$school->logo;
+                }
+            }
+
+            $dataList['data'][$k]['img_a'] = config('api.api_domain') . $val['img_a'];
         }
         return $this->success($dataList);
     }

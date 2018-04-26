@@ -12,7 +12,7 @@ class SchoolTableSeeder extends Seeder
     public function run()
     {
         //
-        for ($i = 0; $i < 100; $i++){
+        for ($i = 0; $i < 1000; $i++){
             \Illuminate\Support\Facades\DB::table('school')->insert([
                 'name'=>'河南工业大学-'.$i.'_'.time(),
                 'logo'=>'/upload/gd.jpg',

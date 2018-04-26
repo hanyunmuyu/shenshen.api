@@ -17,4 +17,9 @@ class SchoolRepository
     {
         return SchoolModel::where('status', 3)->orderBy('id','desc')->paginate(15);
     }
+
+    public function getSchoolBySchoolId($schoolId)
+    {
+        return SchoolModel::where('id', $schoolId)->first();
+    }
 }

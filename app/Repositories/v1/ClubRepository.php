@@ -17,4 +17,9 @@ class ClubRepository
     {
         return ClubModel::where('status', 3)->orderBy('id', 'desc')->paginate(16);
     }
+
+    public function getClubById($clubId)
+    {
+        return ClubModel::where('id', $clubId)->first();
+    }
 }
