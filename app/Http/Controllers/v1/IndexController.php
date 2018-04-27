@@ -15,7 +15,9 @@ use App\Repositories\v1\HomeRecommendRepository;
 use App\Repositories\v1\SchoolRepository;
 use App\Repositories\v1\UserPostRepository;
 use App\Repositories\v1\UserRepository;
+use App\Services\HomeRecommendService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
@@ -23,18 +25,21 @@ class IndexController extends Controller
     private $clubRepository;
     private $userRepository;
     private $schoolRepository;
+    private $homeRecommendService;
 
     public function __construct(
         HomeRecommendRepository $homeRecommendRepository,
         ClubRepository $clubRepository,
         UserRepository $userRepository,
-        SchoolRepository $schoolRepository
+        SchoolRepository $schoolRepository,
+        HomeRecommendService $homeRecommendService
     )
     {
         $this->homeRecommendRepository = $homeRecommendRepository;
         $this->clubRepository = $clubRepository;
         $this->userRepository = $userRepository;
         $this->schoolRepository = $schoolRepository;
+        $this->homeRecommendService = $homeRecommendService;
     }
 
     public function index()
@@ -53,26 +58,26 @@ class IndexController extends Controller
                 $user = $this->userRepository->getUserByUserId($val['source_id']);
                 if ($user) {
                     $dataList['data'][$k]['name'] = $user->user_name;
-                    $dataList['data'][$k]['avatar']=config('api.api_domain') .$user->avatar;
+                    $dataList['data'][$k]['avatar'] = config('api.api_domain') . $user->avatar;
                 }
             } elseif ($val['tag'] == 'school') {
                 $school = $this->schoolRepository->getSchoolBySchoolId($val['source_id']);
                 if ($school) {
                     $dataList['data'][$k]['name'] = $school->name;
-                    $dataList['data'][$k]['avatar']=config('api.api_domain') .$school->logo;
+                    $dataList['data'][$k]['avatar'] = config('api.api_domain') . $school->logo;
                 }
             }
             $imgList = [];
             if ($val['img_a']) {
-                $imgList[]= config('api.api_domain') . $val['img_a'];
+                $imgList[] = config('api.api_domain') . $val['img_a'];
                 unset($dataList['data'][$k]['img_a']);
             }
             if ($val['img_b']) {
-                $imgList[]= config('api.api_domain') . $val['img_b'];
+                $imgList[] = config('api.api_domain') . $val['img_b'];
                 unset($dataList['data'][$k]['img_b']);
             }
             if ($val['img_c']) {
-                $imgList[]= config('api.api_domain') . $val['img_c'];
+                $imgList[] = config('api.api_domain') . $val['img_c'];
                 unset($dataList['data'][$k]['img_c']);
             }
             $dataList['data'][$k]['imgList'] = $imgList;
@@ -86,22 +91,35 @@ class IndexController extends Controller
         if (!$id) {
             return $this->error('id不可以为空');
         }
-        $res=$this->homeRecommendRepository->addClickNumber($id);
+        $res = $this->homeRecommendRepository->addClickNumber($id);
         if ($res) {
             return $this->success([]);
         }
         return $this->error('');
     }
+
     public function addFavorite(Request $request)
     {
         $id = $request->get('id');
         if (!$id) {
             return $this->error('id不可以为空');
         }
-        $res=$this->homeRecommendRepository->addFavorite($id);
+        $recommend = $this->homeRecommendRepository->getHomeRecommendById($id);
+        if (!$recommend) {
+            return $this->error('该数据不存在！');
+        }
+        $tag = $recommend->tag;
+        if (!Auth::check()) {
+            return $this->error('清先登录！');
+        }
+        $user = Auth::user();
+        $uid = $user->id;
+        $res = $this->homeRecommendService->addFavorite($id, $tag, $uid);
         if ($res) {
             return $this->success([]);
         }
+
+
         return $this->error('');
     }
 }

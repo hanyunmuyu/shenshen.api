@@ -18,6 +18,10 @@ class HomeRecommendRepository
         return HomeRecommendModel::orderBy('id', 'desc')->paginate(16);
     }
 
+    public function getHomeRecommendById($id)
+    {
+        return HomeRecommendModel::where('id', $id)->first();
+    }
     public function addClickNumber($id)
     {
         return HomeRecommendModel::where('id', $id)->increment('click_num');
@@ -26,5 +30,9 @@ class HomeRecommendRepository
     public function addFavorite($id)
     {
         return HomeRecommendModel::where('id', $id)->increment('favorite_num');
+    }
+    public function delFavorite($id)
+    {
+        return HomeRecommendModel::where('id', $id)->decrement('favorite_num');
     }
 }
