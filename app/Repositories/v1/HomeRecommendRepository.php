@@ -17,4 +17,14 @@ class HomeRecommendRepository
     {
         return HomeRecommendModel::orderBy('id', 'desc')->paginate(16);
     }
+
+    public function addClickNumber($id)
+    {
+        return HomeRecommendModel::where('id', $id)->increment('click_num');
+    }
+
+    public function addFavorite($id)
+    {
+        return HomeRecommendModel::where('id', $id)->increment('favorite_num');
+    }
 }

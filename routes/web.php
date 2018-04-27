@@ -19,6 +19,10 @@ $router->group(['namespace'=>'v1','prefix'=>'/api/v1'], function () use ($router
     $router->post('/login','LoginController@login');
     //首页数据
     $router->get('/','IndexController@index');
+    //点击次数增加
+    $router->post('/click/number/increment','IndexController@addClickNumber');
+    //推荐列表，添加喜欢收藏
+    $router->post('/recommend/favorite','IndexController@addFavorite');
     //高校列表
     $router->get('/school/list', 'SchoolController@getSchoolList');
     //社团列表

@@ -15,6 +15,7 @@ use App\Repositories\v1\HomeRecommendRepository;
 use App\Repositories\v1\SchoolRepository;
 use App\Repositories\v1\UserPostRepository;
 use App\Repositories\v1\UserRepository;
+use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
@@ -61,9 +62,46 @@ class IndexController extends Controller
                     $dataList['data'][$k]['avatar']=config('api.api_domain') .$school->logo;
                 }
             }
-
-            $dataList['data'][$k]['img_a'] = config('api.api_domain') . $val['img_a'];
+            $imgList = [];
+            if ($val['img_a']) {
+                $imgList[]= config('api.api_domain') . $val['img_a'];
+                unset($dataList['data'][$k]['img_a']);
+            }
+            if ($val['img_b']) {
+                $imgList[]= config('api.api_domain') . $val['img_b'];
+                unset($dataList['data'][$k]['img_b']);
+            }
+            if ($val['img_c']) {
+                $imgList[]= config('api.api_domain') . $val['img_c'];
+                unset($dataList['data'][$k]['img_c']);
+            }
+            $dataList['data'][$k]['imgList'] = $imgList;
         }
         return $this->success($dataList);
+    }
+
+    public function addClickNumber(Request $request)
+    {
+        $id = $request->get('id');
+        if (!$id) {
+            return $this->error('id不可以为空');
+        }
+        $res=$this->homeRecommendRepository->addClickNumber($id);
+        if ($res) {
+            return $this->success([]);
+        }
+        return $this->error('');
+    }
+    public function addFavorite(Request $request)
+    {
+        $id = $request->get('id');
+        if (!$id) {
+            return $this->error('id不可以为空');
+        }
+        $res=$this->homeRecommendRepository->addFavorite($id);
+        if ($res) {
+            return $this->success([]);
+        }
+        return $this->error('');
     }
 }

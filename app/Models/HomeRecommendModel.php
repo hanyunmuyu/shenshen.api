@@ -14,4 +14,5 @@ use Illuminate\Database\Eloquent\Model;
 class HomeRecommendModel extends Model
 {
     protected $table = 'home_recommend';
+    public $timestamps = false;
 }
