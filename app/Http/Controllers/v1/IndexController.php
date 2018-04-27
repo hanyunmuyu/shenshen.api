@@ -28,6 +28,7 @@ class IndexController extends Controller
     private $schoolRepository;
     private $homeRecommendService;
     private $userCollectionRepository;
+
     public function __construct(
         HomeRecommendRepository $homeRecommendRepository,
         ClubRepository $clubRepository,
@@ -90,11 +91,15 @@ class IndexController extends Controller
 
     public function addClickNumber(Request $request)
     {
-        $id = $request->get('id');
-        if (!$id) {
+        $sourceId = $request->get('sourceId');
+        if (!$sourceId) {
             return $this->error('id不可以为空');
         }
-        $res = $this->homeRecommendRepository->addClickNumber($id);
+        $tag = $request->get('tag');
+        if (!$tag) {
+            return $this->error('tag不可以为空');
+        }
+        $res = $this->homeRecommendRepository->addClickNumber($sourceId, $tag);
         if ($res) {
             return $this->success([]);
         }
@@ -138,7 +143,7 @@ class IndexController extends Controller
         }
         $user = Auth::user();
         $uid = $user->id;
-        $collection=$this->userCollectionRepository->getCollection($uid,$tag, $id);
+        $collection = $this->userCollectionRepository->getCollection($uid, $tag, $id);
         if ($collection) {
             return $this->success(['favorite' => 1]);
         }
