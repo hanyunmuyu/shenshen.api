@@ -21,8 +21,6 @@ $router->group(['namespace'=>'v1','prefix'=>'/api/v1'], function () use ($router
     $router->get('/','IndexController@index');
     //点击次数增加
     $router->post('/click/number/increment','IndexController@addClickNumber');
-    //推荐列表，添加喜欢收藏
-    $router->post('/recommend/favorite','IndexController@addFavorite');
     //高校列表
     $router->get('/school/list', 'SchoolController@getSchoolList');
     //社团列表
@@ -31,4 +29,10 @@ $router->group(['namespace'=>'v1','prefix'=>'/api/v1'], function () use ($router
     $router->get('/club/activity/new', 'ClubActivityController@getClubNewActivity');
     //班级列表
     $router->get('/class/list', 'SchoolClassController@getSchoolClassList');
+    $router->group(['middleware'=>['auth']], function () use ($router) {
+        //推荐列表，添加喜欢收藏
+        $router->post('/recommend/favorite','IndexController@addFavorite');
+        //点赞状态查询
+        $router->post('/recommend/favorite/detail','IndexController@getUserCollectionById');
+    });
 });

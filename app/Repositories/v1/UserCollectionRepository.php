@@ -13,27 +13,30 @@ use App\Models\UserCollectionModel;
 
 class UserCollectionRepository
 {
-    public function addCollection($id,$tag, $uid)
+    public function addCollection($sourceId, $tag, $uid)
     {
         return UserCollectionModel::insert([
             'user_id' => $uid,
-            'source_id' => $id,
+            'source_id' => $sourceId,
             'tag' => $tag,
             'add_time' => time()
         ]);
     }
 
-    public function getCollection($uid, $sourceId)
+    public function delCollection($sourceId, $tag, $uid)
     {
         return UserCollectionModel::where('user_id', $uid)
             ->where('source_id', $sourceId)
+            ->where('tag', $tag)
+            ->delete();
+    }
+
+    public function getCollection($uid, $tag, $sourceId)
+    {
+        return UserCollectionModel::where('user_id', $uid)
+            ->where('source_id', $sourceId)
+            ->where('tag', $tag)
             ->first();
     }
 
-    public function delCollection($uid, $sourceId)
-    {
-        return UserCollectionModel::where('user_id', $uid)
-            ->where('source_id', $sourceId)
-            ->delete();
-    }
 }

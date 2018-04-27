@@ -26,15 +26,15 @@ class HomeRecommendService
         $this->userCollectionRepository = $userCollectionRepository;
     }
 
-    public function addFavorite($id, $tag, $uid)
+    public function addFavorite($sourceId, $tag, $uid)
     {
-        $collection = $this->userCollectionRepository->getCollection($uid, $id);
+        $collection = $this->userCollectionRepository->getCollection($uid, $tag, $sourceId);
         if (!$collection) {
-            $this->homeRecommendRepository->addFavorite($id);
-            return $this->userCollectionRepository->addCollection($id, $tag, $uid);
-        }else{
-            $this->homeRecommendRepository->delFavorite($id);
-            return $this->userCollectionRepository->delCollection($uid, $id);
+            $this->homeRecommendRepository->addFavorite($sourceId, $tag);
+            return $this->userCollectionRepository->addCollection($sourceId, $tag, $uid);
+        } else {
+            $this->homeRecommendRepository->delFavorite($sourceId, $tag);
+            return $this->userCollectionRepository->delCollection($sourceId, $tag, $uid);
         }
     }
 }

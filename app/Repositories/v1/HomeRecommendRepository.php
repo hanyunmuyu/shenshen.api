@@ -18,21 +18,27 @@ class HomeRecommendRepository
         return HomeRecommendModel::orderBy('id', 'desc')->paginate(16);
     }
 
-    public function getHomeRecommendById($id)
+    public function getHomeRecommendByTagAndSourceId($sourceId,$tag)
     {
-        return HomeRecommendModel::where('id', $id)->first();
+        return HomeRecommendModel::where('source_id', $sourceId)
+            ->where('tag',$tag)
+            ->first();
     }
     public function addClickNumber($id)
     {
         return HomeRecommendModel::where('id', $id)->increment('click_num');
     }
 
-    public function addFavorite($id)
+    public function addFavorite($sourceId,$tag)
     {
-        return HomeRecommendModel::where('id', $id)->increment('favorite_num');
+        return HomeRecommendModel::where('source_id', $sourceId)
+            ->where('tag',$tag)
+            ->increment('favorite_num');
     }
-    public function delFavorite($id)
+    public function delFavorite($sourceId,$tag)
     {
-        return HomeRecommendModel::where('id', $id)->decrement('favorite_num');
+        return HomeRecommendModel::where('source_id', $sourceId)
+            ->where('tag',$tag)
+            ->decrement('favorite_num');
     }
 }

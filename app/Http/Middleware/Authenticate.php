@@ -36,7 +36,8 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+            header('Content-Type:application/json; charset=utf-8');
+            return response(json_encode(['code' => 4000, 'msg' => '请先登录！']));
         }
 
         return $next($request);

@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\v1\ClubRepository;
 use App\Repositories\v1\HomeRecommendRepository;
 use App\Repositories\v1\SchoolRepository;
+use App\Repositories\v1\UserCollectionRepository;
 use App\Repositories\v1\UserPostRepository;
 use App\Repositories\v1\UserRepository;
 use App\Services\HomeRecommendService;
@@ -26,13 +27,14 @@ class IndexController extends Controller
     private $userRepository;
     private $schoolRepository;
     private $homeRecommendService;
-
+    private $userCollectionRepository;
     public function __construct(
         HomeRecommendRepository $homeRecommendRepository,
         ClubRepository $clubRepository,
         UserRepository $userRepository,
         SchoolRepository $schoolRepository,
-        HomeRecommendService $homeRecommendService
+        HomeRecommendService $homeRecommendService,
+        UserCollectionRepository $userCollectionRepository
     )
     {
         $this->homeRecommendRepository = $homeRecommendRepository;
@@ -40,6 +42,7 @@ class IndexController extends Controller
         $this->userRepository = $userRepository;
         $this->schoolRepository = $schoolRepository;
         $this->homeRecommendService = $homeRecommendService;
+        $this->userCollectionRepository = $userCollectionRepository;
     }
 
     public function index()
@@ -101,14 +104,13 @@ class IndexController extends Controller
     public function addFavorite(Request $request)
     {
         $id = $request->get('id');
+        $tag = $request->get('tag');
         if (!$id) {
             return $this->error('id不可以为空');
         }
-        $recommend = $this->homeRecommendRepository->getHomeRecommendById($id);
-        if (!$recommend) {
-            return $this->error('该数据不存在！');
+        if (!$tag) {
+            return $this->error('tag不可以为空');
         }
-        $tag = $recommend->tag;
         if (!Auth::check()) {
             return $this->error('清先登录！');
         }
@@ -118,8 +120,28 @@ class IndexController extends Controller
         if ($res) {
             return $this->success([]);
         }
+        return $this->error('操作失败！');
+    }
 
-
-        return $this->error('');
+    public function getUserCollectionById(Request $request)
+    {
+        $id = $request->get('id');
+        $tag = $request->get('tag');
+        if (!$tag) {
+            return $this->error('tag不可以为空');
+        }
+        if (!$id) {
+            return $this->error('id不可以为空');
+        }
+        if (!Auth::check()) {
+            return $this->error('请先登录！');
+        }
+        $user = Auth::user();
+        $uid = $user->id;
+        $collection=$this->userCollectionRepository->getCollection($uid,$tag, $id);
+        if ($collection) {
+            return $this->success(['favorite' => 1]);
+        }
+        return $this->success(['favorite' => 0]);
     }
 }
