@@ -38,6 +38,9 @@ class LoginController extends Controller
         $res->last_login_ip = $request->getClientIp();
         $res->last_login_time = time();
         $res->save();
-        return $this->success(['token' => $token]);
+        $data['token'] = $token;
+        $data['user_name'] = $res->user_name;
+        $data['avatar'] = config('api.api_domain') . $res->avatar;
+        return $this->success($data);
     }
 }
