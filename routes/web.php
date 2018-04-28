@@ -27,6 +27,8 @@ $router->group(['namespace'=>'v1','prefix'=>'/api/v1'], function () use ($router
     $router->get('/club/list', 'ClubController@getClubList');
     //社团最新活动
     $router->get('/club/activity/new', 'ClubActivityController@getClubNewActivity');
+    //社团活动帖子详情
+    $router->get('/club/activity/post/detail', 'ClubActivityPostController@getClubActivityPostList');
     //班级列表
     $router->get('/class/list', 'SchoolClassController@getSchoolClassList');
     $router->group(['middleware'=>['auth']], function () use ($router) {
