@@ -26,7 +26,9 @@ class LoginController extends Controller
             return $this->error('密码不可以为空！');
         }
         $user = new User();
-        $res=$user->where('user_name', $userName)->first();
+        $res=$user->where('user_name', $userName)
+            ->where('status',3)
+            ->first();
         if (!$res) {
             return $this->error('该用户不存在！');
         }

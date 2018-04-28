@@ -17,4 +17,16 @@ class UserRepository
     {
         return User::where('id', $uid)->first();
     }
+
+    public function getUserByUserName($userName,$status=3)
+    {
+        return User::where('user_name', $userName)
+            ->where('status',$status)
+            ->first();
+    }
+
+    public function addUser($data)
+    {
+        return User::insert($data);
+    }
 }

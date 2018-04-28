@@ -17,6 +17,7 @@ $router->get('/', function () use ($router) {
 $router->group(['namespace'=>'v1','prefix'=>'/api/v1'], function () use ($router) {
     //登录列表
     $router->post('/login','LoginController@login');
+    $router->post('/register','RegisterController@register');
     //首页数据
     $router->get('/','IndexController@index');
     //点击次数增加
