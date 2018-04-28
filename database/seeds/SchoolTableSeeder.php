@@ -1,7 +1,6 @@
 <?php
 use Illuminate\Database\Seeder;
 
-require_once __DIR__.'/Tools.php';
 
 class SchoolTableSeeder extends Seeder
 {

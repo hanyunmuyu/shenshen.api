@@ -12,14 +12,23 @@ class SchoolClassTableSeeder extends Seeder
     public function run()
     {
         //
-        for ($i = 0; $i < 1000; $i++) {
-            \Illuminate\Support\Facades\DB::table('school_class')->insert([
-                'school_id' => $i + 1,
-                'school_department_id' => $i + 1,
-                'name' => '经贸八班-' . $i,
-                'add_time' => time(),
-                'status' => $i % 3
-            ]);
+        $dataList = $this->getSchoolDepartmentList();
+        for ($i = 0; $i < 10; $i++) {
+            foreach ($dataList as $key => $list) {
+                \Illuminate\Support\Facades\DB::table('school_class')->insert([
+                    'school_id' => $list->school_id,
+                    'school_department_id' => $list->id,
+                    'name' => '经贸八班-' . microtime(true),
+                    'add_time' => time(),
+                    'status' => $key % 4
+                ]);
+            }
+
         }
+    }
+
+    private function getSchoolDepartmentList()
+    {
+        return \App\Models\SchoolDepartmentModel::where('status', 3)->orderBy(\Illuminate\Support\Facades\DB::raw('RAND()'))->get();
     }
 }

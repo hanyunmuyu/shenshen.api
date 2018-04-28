@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Database\Seeder;
-require_once __DIR__.'/Tools.php';
+
 
 class ClubTableSeeder extends Seeder
 {
     use Tools;
+
     /**
      * Run the database seeds.
      *
@@ -14,26 +15,27 @@ class ClubTableSeeder extends Seeder
     public function run()
     {
         //
-        $schoolList = $this->getSchoolList();
-        foreach ($schoolList as $value) {
-            for ($i=0; $i < 10; $i++) {
+        $userList = $this->getUserList();
+        for ($i = 0; $i < 1; $i++) {
+            foreach ($userList as $key => $value) {
                 $data = [
                     'name' => '轮滑社团-' . $i . '-' . microtime(true),
-                    'create_user_id' => $i + 1,
-                    'school_id' => $i + 1,
+                    'create_user_id' => $value->id,
+                    'school_id' => $value->school_id,
                     'logo' => $this->getImg(),
                     'description' => '我是社团，欢迎大家的家如',
                     'add_time' => time(),
-                    'status' => $i % 4
+                    'status' => $key % 4
                 ];
                 $this->addClub($data);
             }
 
         }
     }
-    private function getSchoolList()
+
+    private function getUserList()
     {
-        return \App\Models\SchoolModel::where('status',3)->orderBy(\Illuminate\Support\Facades\DB::raw('RAND()'))->get();
+        return \App\User::where('status', 3)->orderBy(\Illuminate\Support\Facades\DB::raw('RAND()'))->get();
     }
 
     private function addClub($data)

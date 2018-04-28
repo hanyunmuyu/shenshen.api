@@ -17,4 +17,8 @@ trait Tools
         $key=array_rand($arr);
         return $arr[$key];
     }
+    private function getUserList()
+    {
+        return \App\User::where('status', 3)->orderBy(\Illuminate\Support\Facades\DB::raw('RAND()'))->get();
+    }
 }
