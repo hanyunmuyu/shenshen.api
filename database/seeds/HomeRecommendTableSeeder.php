@@ -21,7 +21,7 @@ class HomeRecommendTableSeeder extends Seeder
             $tmp = [];
             $index = random_int(1, 1000);
             $tmp = [
-                'source_id' => $list->id,
+                'source_id' => $list->club_id,
                 'tag'=>'club',
                 'title' => '好美的春色-' . microtime(true),
                 'description' => '冬色爷爷送走了大地的严寒，春姑娘踏着轻盈的脚步来到了人间，春色作文[智库|专题]。春天的景色十分美丽，就像一幅栩栩如生的画。',
