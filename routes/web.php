@@ -35,6 +35,7 @@ $router->group(['namespace'=>'v1','prefix'=>'/api/v1'], function () use ($router
     $router->group(['middleware'=>['auth']], function () use ($router) {
         //推荐列表，添加喜欢收藏
         $router->post('/recommend/favorite','IndexController@addFavorite');
+        $router->get('/user/collection', 'UserCollectionController@getUserCollection');
         //点赞状态查询
         $router->post('/recommend/favorite/detail','IndexController@getUserCollectionById');
     });

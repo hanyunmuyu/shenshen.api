@@ -17,4 +17,11 @@ class ClubActivityRepository
     {
         return ClubActivityModel::where('club_id', $clubId)->orderBy('id', 'desc')->paginate(16);
     }
+
+    public function getClubActivityByIds($idList)
+    {
+        return ClubActivityModel::leftjoin('club','club.id','=','club_activity.club_id')
+            ->select('club_activity.*','club.name','club.logo')
+            ->whereIn('club_activity.id', $idList)->get();
+    }
 }
