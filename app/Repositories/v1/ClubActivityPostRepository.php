@@ -19,4 +19,9 @@ class ClubActivityPostRepository
             ->orderBy('id', 'desc')
             ->paginate(16);
     }
+
+    public function addPost($data)
+    {
+        return ClubActivityPostModel::insert($data);
+    }
 }

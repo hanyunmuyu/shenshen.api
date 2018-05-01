@@ -24,4 +24,9 @@ class ClubActivityRepository
             ->select('club_activity.*','club.name','club.logo')
             ->whereIn('club_activity.id', $idList)->get();
     }
+
+    public function getClubActivityByActivityId($id)
+    {
+        return ClubActivityModel::where('id', $id)->first();
+    }
 }

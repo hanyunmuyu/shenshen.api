@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ClubUserTableSeeder::class);
         $this->call(ClubActivityTableSeeder::class);
         $this->call(ClubActivityPostTableSeeder::class);
+        $this->call(ClubActivityPostPraiseTableSeeder::class);
         $this->call(HomeRecommendTableSeeder::class);
         //上面几部已经可以了
 

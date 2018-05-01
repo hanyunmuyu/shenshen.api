@@ -38,5 +38,8 @@ $router->group(['namespace'=>'v1','prefix'=>'/api/v1'], function () use ($router
         $router->get('/user/collection', 'UserCollectionController@getUserCollection');
         //点赞状态查询
         $router->post('/recommend/favorite/detail','IndexController@getUserCollectionById');
+        //社团活动评论
+        $router->post('/club/activity/doPost', 'ClubActivityPostController@doPost');
+
     });
 });
