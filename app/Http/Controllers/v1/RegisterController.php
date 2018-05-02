@@ -32,7 +32,7 @@ class RegisterController extends Controller
         if (!$userPwd) {
             return $this->error('密码不可以为空！');
         }
-        if (!$userPwd!=$userConfirmPwd) {
+        if ($userPwd!=$userConfirmPwd) {
             return $this->error('密码两次要一致！');
         }
         $user = $this->userRepository->getUserByUserName($userName);

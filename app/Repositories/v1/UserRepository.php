@@ -18,10 +18,9 @@ class UserRepository
         return User::where('id', $uid)->first();
     }
 
-    public function getUserByUserName($userName,$status=3)
+    public function getUserByUserName($userName)
     {
         return User::where('user_name', $userName)
-            ->where('status',$status)
             ->first();
     }
 

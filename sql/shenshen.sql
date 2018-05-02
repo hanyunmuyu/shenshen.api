@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-05-02 14:36:48
+Date: 2018-05-02 22:16:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -146,17 +146,19 @@ CREATE TABLE `users` (
   `api_token` char(32) DEFAULT NULL,
   `status` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '用户状态0：禁用；1 正常；',
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `last_login_ip` varchar(45) DEFAULT NULL COMMENT '最后登录的ip',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `api_token` (`api_token`),
   UNIQUE KEY `mobile` (`mobile`) USING BTREE,
   KEY `college_id` (`college_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
+INSERT INTO `users` VALUES ('5', null, 'hanyun', 'e10adc3949ba59abbe56e057f20f883e', null, '1', null, 'eccbc87e4b5ce2fe28308fd9f2a7baf3', '1', '2018-05-02 14:13:46', null, '192.168.0.106');
 
 -- ----------------------------
 -- Table structure for user_informations
