@@ -41,9 +41,10 @@ class RegisterController extends Controller
         }
         $token = md5(rand(1, 100));
         $data['api_token'] = $token;
-        $data['user_pwd'] = md5($userPwd);
+        $data['user_name'] = $userName;
+        $data['user_password'] = md5($userPwd);
+        $data['created_at'] = date('Y-m-d H:i:s');
         $data['last_login_ip'] = $request->getClientIp();
-        $data['add_time'] = time();
         $res=$this->userRepository->addUser($data);
         if ($res) {
             return $this->success(['token' => $token]);

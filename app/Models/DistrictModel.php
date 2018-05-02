@@ -13,5 +13,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class DistrictModel extends Model
 {
-    public $table = 'districts';
+    public $table = 'district';
 }
