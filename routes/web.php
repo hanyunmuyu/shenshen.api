@@ -18,6 +18,7 @@ $router->group(['namespace'=>'v1','prefix'=>'/api/v1'], function () use ($router
     //登录列表
     $router->post('/login','LoginController@login');
     $router->get('/area','DistrictController@getArea');
+    $router->get('/college/list','CollegeController@getCollegeList');
     $router->post('/register','RegisterController@register');
     //首页数据
     $router->get('/','IndexController@index');
